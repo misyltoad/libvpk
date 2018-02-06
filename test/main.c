@@ -11,11 +11,11 @@
 #endif
 
 int main(int argc, char** argv)
-{
-    VPKHandle handle = vpk_load("D:/Steam/steamapps/common/Portal 2/portal2/pak01");
+{    
+	VPKHandle handle = vpk_load("D:/Titanfall 2/englishclient_sp_boomtown_start.bsp.pak000_dir.vpk");
 	//VPKHandle handle = vpk_load("D:/Steam/steamapps/common/Portal 2/portal2/pak01_dir.vpk");
 
-	VPKFile file = vpk_fopen(handle, "models/ballbot_animations.ani");
+	/*VPKFile file = vpk_fopen(handle, "models/ballbot_animations.ani");
 
 	VPKFile loopFile = vpk_ffirst(handle);
 
@@ -23,9 +23,9 @@ int main(int argc, char** argv)
 
 	FILE* extractedFile = fopen("klaxon1.wav", "wb+");
 	fwrite(fileData, vpk_flen(file), 1, extractedFile);
-	fclose(extractedFile);
+	fclose(extractedFile);*/
 
-	vpk_free(fileData);
+	//vpk_free(fileData);
 
     vpk_close(handle);
 

@@ -55,6 +55,7 @@ extern "C"
 	LIBVPK_EXPORT VPKGenericHeader* vpk_get_header(VPKHandle handle);
 	LIBVPK_EXPORT int vpk_valid_handle(VPKHandle handle);
 
+	LIBVPK_EXPORT const char* vpk_fext(VPKFile file);
 	LIBVPK_EXPORT const char* vpk_fpath(VPKFile file);
 	LIBVPK_EXPORT VPKFile vpk_ffirst(VPKHandle handle);
 	LIBVPK_EXPORT VPKFile vpk_fnext(VPKHandle handle);

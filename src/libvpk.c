@@ -44,6 +44,12 @@ int vpk_valid_handle(VPKHandle handle)
 	return handle == VPK_NULL_HANDLE ? 0 : 1;
 }
 
+const char* vpk_fext(VPKFile file)
+{
+	VPKFileData* handle_data = (VPKFileData*)file;
+	return handle_data->Extension;
+}
+
 const char* vpk_fpath(VPKFile file)
 {
 	VPKFileData* handle_data = (VPKFileData*)file;
@@ -154,7 +160,7 @@ void vpk_parse_directories(VPKHandleData* data)
 
 				vpk_file.Meta.Offset = vpk_read_int32(data->DirectoryFile);
 				vpk_file.Meta.Length = vpk_read_int32(data->DirectoryFile);
-				vpk_read_int16(data->DirectoryFile); // Terminator
+				int16_t terminator = vpk_read_int16(data->DirectoryFile);
 				vpk_file.Preload = NULL;
 				if (vpk_file.Meta.PreloadBytes)
 				{
@@ -237,7 +243,7 @@ VPKHandle vpk_load(const char* vpk_path)
 
 	rewind(data->DirectoryFile);
 
-	size_t header_size = generic_header.Version == 1 ? sizeof(VPK1Header) : sizeof(VPK2Header);
+	size_t header_size = generic_header.Version == 2 ? sizeof(VPK2Header) : generic_header.Version == 1 ? sizeof(VPK1Header) : 16;
 	data->Header = (VPKGenericHeader*)malloc(header_size);
 
 	fread(data->Header, header_size, 1, data->DirectoryFile);
