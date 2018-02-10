@@ -56,7 +56,7 @@ const char* vpk_fpath(VPKFile file)
 	return handle_data->FullFormedPath;
 }
 
-inline VPKHandleData* vpk_data_from_handle(VPKHandle handle)
+static inline VPKHandleData* vpk_data_from_handle(VPKHandle handle)
 {
 	return (VPKHandleData*)handle;
 }
@@ -101,22 +101,21 @@ VPKFile vpk_fnext(VPKHandle handle)
 		return NULL;
 }
 
-
-int32_t vpk_read_int32(FILE* file)
+static int32_t vpk_read_int32(FILE* file)
 {
 	int32_t retVal;
 	fread(&retVal, sizeof(int32_t), 1, file);
 	return retVal;
 }
 
-int16_t vpk_read_int16(FILE* file)
+static int16_t vpk_read_int16(FILE* file)
 {
 	int16_t retVal;
 	fread(&retVal, sizeof(int16_t), 1, file);
 	return retVal;
 }
 
-void vpk_parse_directories(VPKHandleData* data)
+static void vpk_parse_directories(VPKHandleData* data)
 {
 	data->FileMap = VPKFileData_Hashmap_Create();
 
@@ -175,7 +174,7 @@ void vpk_parse_directories(VPKHandleData* data)
 	}
 }
 
-int strcicmp(char const *a, char const *b)
+static int strcicmp(char const *a, char const *b)
 {
 	for (;; a++, b++) {
 		int d = tolower(*a) - tolower(*b);
@@ -307,8 +306,9 @@ size_t vpk_flen(VPKFile file)
 	return file_data->Meta.Length + file_data->Meta.PreloadBytes;
 }
 
-size_t vpk_fread(void* ptr, size_t size, size_t count, VPKFile file)
+size_t vpk_fread(void* pointer, size_t size, size_t count, VPKFile file)
 {
+	char* ptr = (char*)pointer;
 	VPKFileData* file_data = (VPKFileData*)file;
 
 	long total_length = (long) (size * count);
@@ -329,7 +329,7 @@ size_t vpk_fread(void* ptr, size_t size, size_t count, VPKFile file)
 	if (preload_read_count > 0)
 	{
 		memcpy(ptr, file_data->Preload, preload_read_count);
-		(char*)ptr += preload_read_count;
+		ptr += preload_read_count;
 	}
 
 	if (chunked_read_count > 0)
